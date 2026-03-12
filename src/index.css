@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* ---- Theme Variables ---- */
+html {
+  scroll-behavior: smooth;
+}
+
+.light,
+html:not(.dark) {
+  --bg: #faf9f6;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fefefe;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+  --accent: #1a1a1a;
+  --accent-soft: rgba(0, 0, 0, 0.04);
+  --nav-bg: rgba(250, 249, 246, 0.85);
+  --tag-bg: #f0eeeb;
+  --tag-text: #555;
+}
+
+.dark {
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card-hover: #161616;
+  --text-primary: #ededec;
+  --text-secondary: #a0a0a0;
+  --text-muted: #555555;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.14);
+  --accent: #ededec;
+  --accent-soft: rgba(255, 255, 255, 0.04);
+  --nav-bg: rgba(10, 10, 10, 0.85);
+  --tag-bg: #1a1a1a;
+  --tag-text: #a0a0a0;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+}
+.dark ::selection {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ---- Reveal ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---- 3D Card Tilt ---- */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* ---- Ping animation for availability dot ---- */
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
