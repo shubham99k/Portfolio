@@ -40,7 +40,3 @@ src/
 public/
 ├── favicon.svg    # Site icon
 ```
-
-## License
-
-MIT
