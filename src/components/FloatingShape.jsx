@@ -1,12 +1,19 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../ThemeContext";
 
 function WireframeGlobe() {
   const canvasRef = useRef(null);
   const { dark } = useTheme();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationId;
@@ -47,7 +54,7 @@ function WireframeGlobe() {
       const color = dark ? "255,255,255" : "0,0,0";
       angle += 0.003;
 
-      const segments = 40;
+      const segments = 28;
 
       // Draw longitude lines (vertical)
       for (let i = 0; i < 12; i++) {
@@ -124,13 +131,18 @@ function WireframeGlobe() {
 
     draw();
     return () => cancelAnimationFrame(animationId);
-  }, [dark]);
+  }, [dark, ready]);
 
   return (
     <canvas
       ref={canvasRef}
       className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-      style={{ width: "300px", height: "300px" }}
+      style={{
+        width: "300px",
+        height: "300px",
+        opacity: ready ? 1 : 0,
+        transition: "opacity 1s ease",
+      }}
     />
   );
 }

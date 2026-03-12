@@ -1,11 +1,18 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../ThemeContext";
 
 export default function Particles() {
   const canvasRef = useRef(null);
   const { dark } = useTheme();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationId;
@@ -25,17 +32,16 @@ export default function Particles() {
     };
     window.addEventListener("mousemove", handleMouse);
 
-    // Create particles
     const count = Math.min(
-      600,
-      Math.floor((window.innerWidth * window.innerHeight) / 20000),
+      80,
+      Math.floor((window.innerWidth * window.innerHeight) / 25000),
     );
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 1,
-        vy: (Math.random() - 0.5) * 1,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
         size: Math.random() * 1.2 + 0.2,
       });
     }
@@ -45,17 +51,14 @@ export default function Particles() {
       const color = dark ? "255,255,255" : "0,0,0";
 
       particles.forEach((p, i) => {
-        // Move
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
 
-        // Mouse repulsion
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -64,22 +67,20 @@ export default function Particles() {
           p.y += dy * 0.02;
         }
 
-        // Draw particle
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(" + color + ",0.6)";
         ctx.fill();
 
-        // Connect nearby particles
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
-          if (d < 150) {
+          if (d < 120) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.strokeStyle =
-              "rgba(" + color + "," + 0.09 * (1 - d / 150) + ")";
+              "rgba(" + color + "," + 0.09 * (1 - d / 120) + ")";
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -96,13 +97,13 @@ export default function Particles() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouse);
     };
-  }, [dark]);
+  }, [dark, ready]);
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 1 }}
+      style={{ opacity: ready ? 1 : 0, transition: "opacity 1s ease" }}
     />
   );
 }
