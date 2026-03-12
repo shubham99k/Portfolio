@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -12,7 +12,23 @@ import MarqueeText from "./components/MarqueeText";
 import MovingGrid from "./components/MovingGrid";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [showEffects, setShowEffects] = useState(false);
+
   useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => setShowEffects(true), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (loading) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -23,15 +39,28 @@ function App() {
     );
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [loading]);
+
+  if (loading) {
+    return (
+      <div className="loader-screen">
+        <div className="loader-content">
+          <p className="loader-name font-serif">Shubham Sali</p>
+          <div className="loader-bar-track">
+            <div className="loader-bar-fill" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
-      className="min-h-screen font-sans relative"
+      className="min-h-screen font-sans relative fade-in"
       style={{ backgroundColor: "var(--bg)", color: "var(--text-primary)" }}
     >
-      <MovingGrid />
-      <Particles />
+      {showEffects && <MovingGrid />}
+      {showEffects && <Particles />}
       <Navbar />
       <main className="relative z-10">
         <Hero />

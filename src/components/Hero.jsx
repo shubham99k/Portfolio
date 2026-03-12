@@ -13,8 +13,15 @@ export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => setStarted(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
     const current = roles[roleIndex];
     let timeout;
     if (!isDeleting && text === current) {
@@ -34,7 +41,7 @@ export default function Hero() {
       );
     }
     return () => clearTimeout(timeout);
-  }, [text, isDeleting, roleIndex]);
+  }, [text, isDeleting, roleIndex, started]);
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -102,8 +109,8 @@ export default function Hero() {
           className="mt-3 text-[13px] md:text-sm max-w-lg mx-auto font-mono tracking-wide"
           style={{ color: "var(--text-muted)" }}
         >
-          (Recently discovering that good prompts can be <br />as important as good
-          code.)
+          (Recently discovering that good prompts can be <br />
+          as important as good code.)
         </motion.p>
 
         {/* CTA */}
