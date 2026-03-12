@@ -8,7 +8,7 @@ const roles = [
   "(Prompt Engineer by curiosity)",
 ];
 
-export default function Hero() {
+export default function Hero({ showGlobe }) {
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -44,7 +44,7 @@ export default function Hero() {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <FloatingShape />
+      <FloatingShape showGlobe={showGlobe} />
 
       <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
         <p

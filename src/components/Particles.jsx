@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "../ThemeContext";
 
+const mobile = typeof window !== "undefined" && window.innerWidth < 768;
+
 export default function Particles() {
   const canvasRef = useRef(null);
   const { dark } = useTheme();
@@ -11,6 +13,7 @@ export default function Particles() {
     let animationId;
     let particles = [];
     let mouse = { x: -1000, y: -1000 };
+    let frame = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -19,27 +22,41 @@ export default function Particles() {
     resize();
     window.addEventListener("resize", resize);
 
-    const handleMouse = (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    };
-    window.addEventListener("mousemove", handleMouse);
+    if (!mobile) {
+      const handleMouse = (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      };
+      window.addEventListener("mousemove", handleMouse);
+    }
 
-    const count = Math.min(
-      80,
-      Math.floor((window.innerWidth * window.innerHeight) / 25000),
-    );
+    const count = mobile
+      ? Math.min(
+          30,
+          Math.floor((window.innerWidth * window.innerHeight) / 40000),
+        )
+      : Math.min(
+          80,
+          Math.floor((window.innerWidth * window.innerHeight) / 25000),
+        );
+
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
+        vx: (Math.random() - 0.5) * (mobile ? 0.3 : 0.6),
+        vy: (Math.random() - 0.5) * (mobile ? 0.3 : 0.6),
         size: Math.random() * 1.2 + 0.2,
       });
     }
 
     const animate = () => {
+      frame++;
+      if (mobile && frame % 2 !== 0) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const color = dark ? "255,255,255" : "0,0,0";
 
@@ -52,12 +69,14 @@ export default function Particles() {
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
 
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 180) {
-          p.x += dx * 0.02;
-          p.y += dy * 0.02;
+        if (!mobile) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 180) {
+            p.x += dx * 0.02;
+            p.y += dy * 0.02;
+          }
         }
 
         ctx.beginPath();
@@ -65,17 +84,19 @@ export default function Particles() {
         ctx.fillStyle = "rgba(" + color + ",0.6)";
         ctx.fill();
 
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
-          if (d < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle =
-              "rgba(" + color + "," + 0.09 * (1 - d / 120) + ")";
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
+        if (!mobile) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const d = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
+            if (d < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle =
+                "rgba(" + color + "," + 0.09 * (1 - d / 120) + ")";
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
           }
         }
       });
@@ -88,7 +109,6 @@ export default function Particles() {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouse);
     };
   }, [dark]);
 
@@ -96,7 +116,7 @@ export default function Particles() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ animation: "fadeIn 1s ease both" }}
+      style={{ animation: "fadeIn 1s ease both", willChange: "transform" }}
     />
   );
 }

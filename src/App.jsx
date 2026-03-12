@@ -11,11 +11,11 @@ import Particles from "./components/Particles";
 import MarqueeText from "./components/MarqueeText";
 import MovingGrid from "./components/MovingGrid";
 
-const isMobile = () => window.innerWidth < 768;
-
 function App() {
   const [loading, setLoading] = useState(true);
-  const [showEffects, setShowEffects] = useState(false);
+  const [showGrid, setShowGrid] = useState(false);
+  const [showGlobe, setShowGlobe] = useState(false);
+  const [showParticles, setShowParticles] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1800);
@@ -24,9 +24,14 @@ function App() {
 
   useEffect(() => {
     if (!loading) {
-      if (isMobile()) return;
-      const timer = setTimeout(() => setShowEffects(true), 300);
-      return () => clearTimeout(timer);
+      const t1 = setTimeout(() => setShowGrid(true), 100);
+      const t2 = setTimeout(() => setShowGlobe(true), 400);
+      const t3 = setTimeout(() => setShowParticles(true), 900);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+      };
     }
   }, [loading]);
 
@@ -62,11 +67,11 @@ function App() {
       className="min-h-screen font-sans relative fade-in"
       style={{ backgroundColor: "var(--bg)", color: "var(--text-primary)" }}
     >
-      {showEffects && <MovingGrid />}
-      {showEffects && <Particles />}
+      {showGrid && <MovingGrid />}
+      {showParticles && <Particles />}
       <Navbar />
       <main className="relative z-10">
-        <Hero />
+        <Hero showGlobe={showGlobe} />
         <MarqueeText text="FULL STACK DEVELOPER" speed={25} />
         <div className="reveal">
           <About />

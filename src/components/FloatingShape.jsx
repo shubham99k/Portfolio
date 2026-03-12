@@ -1,25 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTheme } from "../ThemeContext";
 
-const isMobile = () => window.innerWidth < 768;
+const mobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-function WireframeGlobe() {
+function WireframeGlobe({ show }) {
   const canvasRef = useRef(null);
   const { dark } = useTheme();
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (isMobile()) return;
-    const timer = setTimeout(() => setReady(true), 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
+    if (!show) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationId;
     let angle = 0;
+    let frame = 0;
 
     const size = 300;
     canvas.width = size * 2;
@@ -52,15 +46,23 @@ function WireframeGlobe() {
     });
 
     const draw = () => {
+      frame++;
+      if (mobile && frame % 2 !== 0) {
+        animationId = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const color = dark ? "255,255,255" : "0,0,0";
       angle += 0.003;
 
-      const segments = 28;
+      const segments = mobile ? 16 : 28;
+      const lonCount = mobile ? 8 : 12;
+      const latCount = mobile ? 5 : 8;
 
       // Draw longitude lines (vertical)
-      for (let i = 0; i < 12; i++) {
-        const lon = (i / 12) * Math.PI * 2;
+      for (let i = 0; i < lonCount; i++) {
+        const lon = (i / lonCount) * Math.PI * 2;
         ctx.beginPath();
         for (let j = 0; j <= segments; j++) {
           const lat = (j / segments) * Math.PI - Math.PI / 2;
@@ -83,8 +85,8 @@ function WireframeGlobe() {
       }
 
       // Draw latitude lines (horizontal)
-      for (let i = 0; i < 8; i++) {
-        const lat = (i / 8) * Math.PI - Math.PI / 2 + Math.PI / 16;
+      for (let i = 0; i < latCount; i++) {
+        const lat = (i / latCount) * Math.PI - Math.PI / 2 + Math.PI / 16;
         const r2 = R * Math.cos(lat);
         const yy = R * Math.sin(lat);
         ctx.beginPath();
@@ -107,24 +109,26 @@ function WireframeGlobe() {
         ctx.stroke();
       }
 
-      // Draw dots at intersections
-      for (let i = 0; i < 12; i++) {
-        const lon = (i / 12) * Math.PI * 2;
-        for (let j = 1; j < 8; j++) {
-          const lat = (j / 8) * Math.PI - Math.PI / 2;
-          let x = R * Math.cos(lat) * Math.cos(lon);
-          let y = R * Math.sin(lat);
-          let z = R * Math.cos(lat) * Math.sin(lon);
+      // Draw dots at intersections (skip on mobile)
+      if (!mobile) {
+        for (let i = 0; i < 12; i++) {
+          const lon = (i / 12) * Math.PI * 2;
+          for (let j = 1; j < 8; j++) {
+            const lat = (j / 8) * Math.PI - Math.PI / 2;
+            let x = R * Math.cos(lat) * Math.cos(lon);
+            let y = R * Math.sin(lat);
+            let z = R * Math.cos(lat) * Math.sin(lon);
 
-          let r = rotateY(x, y, z, angle);
-          r = rotateX(r.x, r.y, r.z, 0.4);
-          const p = project(r.x, r.y, r.z);
+            let r = rotateY(x, y, z, angle);
+            r = rotateX(r.x, r.y, r.z, 0.4);
+            const p = project(r.x, r.y, r.z);
 
-          const opacity = (0.1 + p.scale * 0.2).toFixed(3);
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 1.2 * p.scale, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(" + color + "," + opacity + ")";
-          ctx.fill();
+            const opacity = (0.1 + p.scale * 0.2).toFixed(3);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 1.2 * p.scale, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(" + color + "," + opacity + ")";
+            ctx.fill();
+          }
         }
       }
 
@@ -133,7 +137,7 @@ function WireframeGlobe() {
 
     draw();
     return () => cancelAnimationFrame(animationId);
-  }, [dark, ready]);
+  }, [dark, show]);
 
   return (
     <canvas
@@ -142,17 +146,18 @@ function WireframeGlobe() {
       style={{
         width: "300px",
         height: "300px",
-        opacity: ready ? 1 : 0,
+        opacity: show ? 1 : 0,
         transition: "opacity 1s ease",
+        willChange: "transform",
       }}
     />
   );
 }
 
-export default function FloatingShape() {
+export default function FloatingShape({ showGlobe }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <WireframeGlobe />
+      <WireframeGlobe show={showGlobe} />
 
       <div
         className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full opacity-[0.07] blur-3xl float-blob-1"
