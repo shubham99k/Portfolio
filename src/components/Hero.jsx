@@ -141,7 +141,7 @@ export default function Hero({ showGlobe }) {
             Get in Touch
           </a>
           <a
-            href="https://drive.google.com/file/d/1soXGLzlqNVLXtprXSLpMCRMbVanwFg_F/view?usp=sharing"
+            href="https://drive.google.com/file/d/137nynlE8l0CPUv19aUWoK41Soa7S1Dv1/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] tracking-wide"
