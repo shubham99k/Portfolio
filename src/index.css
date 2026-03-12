@@ -175,3 +175,123 @@ body {
     opacity: 1;
   }
 }
+
+/* ---- Hero staggered entrance (CSS replaces Framer Motion) ---- */
+@keyframes heroSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-anim {
+  opacity: 0;
+  animation: heroSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-anim-1 {
+  animation-delay: 0.1s;
+}
+.hero-anim-2 {
+  animation-delay: 0.25s;
+}
+.hero-anim-3 {
+  animation-delay: 0.45s;
+}
+.hero-anim-4 {
+  animation-delay: 0.55s;
+}
+.hero-anim-5 {
+  animation-delay: 0.65s;
+}
+.hero-anim-6 {
+  animation-delay: 1.2s;
+}
+
+/* ---- Scroll indicator bounce ---- */
+@keyframes scrollBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+.scroll-indicator {
+  animation: scrollBounce 2.5s ease-in-out infinite;
+}
+
+/* ---- Marquee scroll (CSS replaces Framer Motion) ---- */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+.marquee-scroll {
+  animation: marqueeScroll var(--marquee-duration, 20s) linear infinite;
+}
+
+/* ---- Floating blobs (CSS replaces Framer Motion) ---- */
+@keyframes floatBlob1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(80px, -60px) scale(1.2);
+  }
+  66% {
+    transform: translate(-40px, 40px) scale(0.9);
+  }
+}
+@keyframes floatBlob2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-60px, 50px) scale(0.85);
+  }
+  66% {
+    transform: translate(50px, -30px) scale(1.15);
+  }
+}
+.float-blob-1 {
+  animation: floatBlob1 18s ease-in-out infinite;
+}
+.float-blob-2 {
+  animation: floatBlob2 22s ease-in-out infinite;
+}
+
+/* ---- Orbit ring (CSS replaces Framer Motion) ---- */
+@keyframes orbitSpin {
+  0% {
+    transform: rotateX(75deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(75deg) rotateZ(360deg);
+  }
+}
+.orbit-ring {
+  animation: orbitSpin 15s linear infinite;
+}
+
+/* ---- Grid scroll (CSS replaces Framer Motion) ---- */
+@keyframes gridScroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-32px);
+  }
+}
+.grid-scroll {
+  animation: gridScroll 4s linear infinite;
+}

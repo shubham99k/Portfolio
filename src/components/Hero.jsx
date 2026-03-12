@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import FloatingShape from "./FloatingShape";
 
 const roles = [
@@ -45,26 +44,18 @@ export default function Hero() {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* 3D Wireframe Shape + Gradient Blobs */}
       <FloatingShape />
 
-      {/* Center content */}
       <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="font-mono text-[12px] tracking-[0.2em] uppercase mb-8"
+        <p
+          className="hero-anim hero-anim-1 font-mono text-[12px] tracking-[0.2em] uppercase mb-8"
           style={{ color: "var(--text-muted)" }}
         >
           Shubham Sali &mdash; Vadodara, India
-        </motion.p>
+        </p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="font-serif text-[3.2rem] sm:text-[4rem] md:text-[5rem] leading-[1.05] tracking-[-0.02em]"
+        <h1
+          className="hero-anim hero-anim-2 font-serif text-[3.2rem] sm:text-[4rem] md:text-[5rem] leading-[1.05] tracking-[-0.02em]"
           style={{ color: "var(--text-primary)" }}
         >
           I build things
@@ -72,14 +63,10 @@ export default function Hero() {
           <em className="italic" style={{ color: "var(--text-secondary)" }}>
             for the web
           </em>
-        </motion.h1>
+        </h1>
 
-        {/* Typewriter */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.7 }}
-          className="mt-6 h-6 font-mono text-sm"
+        <div
+          className="hero-anim hero-anim-3 mt-6 h-6 font-mono text-sm"
           style={{ color: "var(--text-muted)" }}
         >
           <span style={{ color: "var(--text-secondary)" }}>{text}</span>
@@ -87,13 +74,10 @@ export default function Hero() {
             className="inline-block w-[2px] h-[1.1em] ml-0.5 align-middle cursor-blink"
             style={{ backgroundColor: "var(--text-secondary)" }}
           />
-        </motion.div>
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-8 text-[15px] md:text-base max-w-lg mx-auto leading-[1.8] font-light"
+        <p
+          className="hero-anim hero-anim-4 mt-8 text-[15px] md:text-base max-w-lg mx-auto leading-[1.8] font-light"
           style={{ color: "var(--text-secondary)" }}
         >
           Final year CSE student, crafting{" "}
@@ -101,25 +85,16 @@ export default function Hero() {
             scalable
           </em>{" "}
           web applications with React, Node.js, and modern technologies.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 text-[13px] md:text-sm max-w-lg mx-auto font-mono tracking-wide"
+        </p>
+        <p
+          className="hero-anim hero-anim-5 mt-3 text-[13px] md:text-sm max-w-lg mx-auto font-mono tracking-wide"
           style={{ color: "var(--text-muted)" }}
         >
           (Recently discovering that good prompts can be <br />
           as important as good code.)
-        </motion.p>
+        </p>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
-        >
+        <div className="hero-anim hero-anim-5 mt-10 flex flex-wrap items-center justify-center gap-4">
           <a
             href="#projects"
             className="group inline-flex items-center gap-2 px-7 py-3 rounded-full text-[13px] font-medium tracking-wide"
@@ -198,28 +173,20 @@ export default function Hero() {
             </svg>
             Resume
           </a>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-5 h-8 rounded-full flex justify-center pt-2"
+      <div className="hero-anim hero-anim-6 absolute bottom-8 left-1/2 -translate-x-1/2">
+        <div
+          className="scroll-indicator w-5 h-8 rounded-full flex justify-center pt-2"
           style={{ border: "1.5px solid var(--border)" }}
         >
           <div
             className="w-1 h-1.5 rounded-full"
             style={{ backgroundColor: "var(--text-muted)" }}
           />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

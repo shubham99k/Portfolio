@@ -1,18 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTheme } from "../ThemeContext";
 
 export default function Particles() {
   const canvasRef = useRef(null);
   const { dark } = useTheme();
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationId;
@@ -97,13 +90,13 @@ export default function Particles() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouse);
     };
-  }, [dark, ready]);
+  }, [dark]);
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: ready ? 1 : 0, transition: "opacity 1s ease" }}
+      style={{ animation: "fadeIn 1s ease both" }}
     />
   );
 }

@@ -11,6 +11,8 @@ import Particles from "./components/Particles";
 import MarqueeText from "./components/MarqueeText";
 import MovingGrid from "./components/MovingGrid";
 
+const isMobile = () => window.innerWidth < 768;
+
 function App() {
   const [loading, setLoading] = useState(true);
   const [showEffects, setShowEffects] = useState(false);
@@ -22,7 +24,8 @@ function App() {
 
   useEffect(() => {
     if (!loading) {
-      const timer = setTimeout(() => setShowEffects(true), 500);
+      if (isMobile()) return;
+      const timer = setTimeout(() => setShowEffects(true), 300);
       return () => clearTimeout(timer);
     }
   }, [loading]);

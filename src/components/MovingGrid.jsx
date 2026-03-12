@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 
 export default function MovingGrid() {
   const [ready, setReady] = useState(false);
@@ -15,10 +14,8 @@ export default function MovingGrid() {
       style={{ opacity: ready ? 1 : 0, transition: "opacity 1s ease" }}
     >
       {ready && (
-        <motion.div
-          animate={{ y: [0, -32] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 opacity-[0.06]"
+        <div
+          className="absolute inset-0 opacity-[0.06] grid-scroll"
           style={{
             backgroundImage:
               "linear-gradient(var(--text-primary) 1px, transparent 1px), linear-gradient(90deg, var(--text-primary) 1px, transparent 1px)",

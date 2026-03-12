@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { useTheme } from "../ThemeContext";
+
+const isMobile = () => window.innerWidth < 768;
 
 function WireframeGlobe() {
   const canvasRef = useRef(null);
@@ -8,6 +9,7 @@ function WireframeGlobe() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    if (isMobile()) return;
     const timer = setTimeout(() => setReady(true), 800);
     return () => clearTimeout(timer);
   }, []);
@@ -150,46 +152,29 @@ function WireframeGlobe() {
 export default function FloatingShape() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* 3D wireframe globe rendered on canvas */}
       <WireframeGlobe />
 
-      {/* Floating gradient blobs */}
-      <motion.div
-        animate={{
-          x: [0, 80, -40, 0],
-          y: [0, -60, 40, 0],
-          scale: [1, 1.2, 0.9, 1],
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full opacity-[0.07] blur-3xl"
+      <div
+        className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full opacity-[0.07] blur-3xl float-blob-1"
         style={{
           background:
             "radial-gradient(circle, var(--text-primary), transparent)",
         }}
       />
-      <motion.div
-        animate={{
-          x: [0, -60, 50, 0],
-          y: [0, 50, -30, 0],
-          scale: [1, 0.85, 1.15, 1],
-        }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -bottom-20 -left-20 w-[350px] h-[350px] rounded-full opacity-[0.07] blur-3xl"
+      <div
+        className="absolute -bottom-20 -left-20 w-[350px] h-[350px] rounded-full opacity-[0.07] blur-3xl float-blob-2"
         style={{
           background:
             "radial-gradient(circle, var(--text-primary), transparent)",
         }}
       />
 
-      {/* Orbiting ring */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{ perspective: "600px" }}
       >
-        <motion.div
-          animate={{ rotateX: 75, rotateZ: [0, 360] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="w-[380px] h-[380px] rounded-full"
+        <div
+          className="orbit-ring w-[380px] h-[380px] rounded-full"
           style={{
             border: "1px solid var(--border-hover)",
             opacity: 0.3,
