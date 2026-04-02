@@ -44,7 +44,7 @@ export default function Hero({ showGlobe }) {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      <FloatingShape showGlobe={showGlobe} />
+      {/* <FloatingShape showGlobe={showGlobe} /> */}
 
       <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
         <p
