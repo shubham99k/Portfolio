@@ -65,6 +65,7 @@ const projects = [
       "Seamless city search experience",
     ],
     github: "https://github.com/shubham99k/Weather-React-App",
+    live: "https://weather-react-app-jet-five.vercel.app/",
   },
 ];
 
