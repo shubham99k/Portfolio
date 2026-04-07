@@ -14,7 +14,7 @@ const projects = [
       "Engineered cutoff-time validation, real-time portion decrement with auto-menu closure, a star rating system, and Nodemailer status notifications.",
     ],
     github: "https://github.com/shubham99k/TiffinBox",
-    live: "https://tiffinbox-theta.vercel.app/",
+    live: "https://tiffinbox.shubhamsali.site/",
   },
   {
     title: "Wanderlust",
@@ -36,7 +36,7 @@ const projects = [
       "Server-side validation with Joi, MongoDB Atlas database",
     ],
     github: "https://github.com/shubham99k/Wanderlust-using-React.git",
-    live: "https://wanderlust-using-react.vercel.app/",
+    live: "https://wanderlust.shubhamsali.site/",
   },
   {
     title: "QuickPost",
@@ -65,7 +65,7 @@ const projects = [
       "Seamless city search experience",
     ],
     github: "https://github.com/shubham99k/Weather-React-App",
-    live: "https://weather-react-app-jet-five.vercel.app/",
+    live: "https://weatherapp.shubhamsali.site/",
   },
 ];
 
