@@ -273,7 +273,7 @@ export default function Contact() {
             value={whatsappName}
             onChange={(e) => setWhatsappName(e.target.value)}
             placeholder='Your name'
-            className='w-full rounded-xl px-4 py-3 text-sm outline-none'
+            className='w-full rounded-xl px-4 py-3 text-base md:text-sm outline-none'
             style={{
               backgroundColor: "var(--bg-card-hover)",
               color: "var(--text-primary)",
@@ -292,7 +292,7 @@ export default function Contact() {
             value={whatsappMessage}
             onChange={(e) => setWhatsappMessage(e.target.value)}
             placeholder='Type your message here...'
-            className='w-full rounded-xl px-4 py-3 text-sm resize-y outline-none'
+            className='w-full rounded-xl px-4 py-3 text-base md:text-sm resize-y outline-none'
             style={{
               backgroundColor: "var(--bg-card-hover)",
               color: "var(--text-primary)",
